@@ -1,0 +1,10 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.0
+Date: 2025-10-17
+  Features:
+    - Added Weight Calculator combinator to calculate total weight of items on circuit networks
+    - Extended Rocket Silo with three new circuit signals: capacity, free weight, and used weight
+    - Added Ship Request Monitor building to monitor specific ship requests
+    - Ship Request Monitor only outputs when ship is in same orbit/location
+    - Support for all modded planets and space platforms
+    - German and English localizations

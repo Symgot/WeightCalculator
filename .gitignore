@@ -1,0 +1,20 @@
+# Factorio mod development files
+*.zip
+
+# Temporary files
+*~
+*.swp
+*.swo
+.DS_Store
+
+# Build artifacts
+build/
+dist/
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+
+# System files
+Thumbs.db

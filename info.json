@@ -1,0 +1,9 @@
+{
+  "name": "WeightCalculator",
+  "version": "1.0.0",
+  "title": "Weight Calculator",
+  "author": "Symgot",
+  "factorio_version": "2.0",
+  "dependencies": ["base >= 2.0", "space-age >= 2.0"],
+  "description": "Adds a circuit combinator to calculate item weights, extends rocket silos with weight signals, and provides ship request monitoring."
+}

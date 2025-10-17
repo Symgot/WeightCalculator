@@ -1,7 +1,8 @@
-# Copilot Instructions for UpcycleHint
+# Copilot Instructions for WeightCalculations
 
 ## Project Overview
-UpcycleHint is a Factorio 2.0 mod that helps players optimize recycling and quality upgrades. It analyzes recipes and provides recommendations for the best recycling sources to achieve quality improvements.
+
+WeightCalculations
 
 ## Technology Stack
 - **Language**: Lua 5.3
@@ -71,7 +72,7 @@ The Logger module is defined at the top of `control.lua` and provides four log l
 - **FATAL**: Critical errors that may prevent mod operation
 
 ### Log File Management
-- Log files are created in `script-output/upcycle-hint/` directory
+- Log files are created in `script-output/weight-calculator/` directory
 - Each log file is named with a timestamp: `upcycle-hint-{game_tick}.log`
 - Log file name is initialized on first log write
 - All log entries are appended to the same file for a game session

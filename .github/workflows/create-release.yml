@@ -1,0 +1,89 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Determine release version
+        id: version
+        run: |
+          MOD_NAME=$(jq -r '.name' info.json)
+          VERSION=$(jq -r '.version' info.json)
+          
+          # Check if release exists and increment until we find an available version
+          ORIGINAL_VERSION="$VERSION"
+          while gh release view "v${VERSION}" >/dev/null 2>&1; do
+            echo "Release v${VERSION} already exists, incrementing..."
+            IFS='.' read -ra VERSION_PARTS <<< "$VERSION"
+            MAJOR="${VERSION_PARTS[0]}"
+            MINOR="${VERSION_PARTS[1]}"
+            PATCH="${VERSION_PARTS[2]}"
+            PATCH=$((PATCH + 1))
+            VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          done
+          
+          # If version was incremented, update info.json and commit
+          if [ "$VERSION" != "$ORIGINAL_VERSION" ]; then
+            echo "Updating info.json from $ORIGINAL_VERSION to $VERSION"
+            jq --arg version "$VERSION" '.version = $version' info.json > info.json.tmp
+            mv info.json.tmp info.json
+            
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add info.json
+            git commit -m "Bump version to $VERSION"
+            git push
+          fi
+          
+          echo "mod_name=$MOD_NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "release_name=${MOD_NAME}_${VERSION}" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Create release directory structure
+        run: |
+          RELEASE_NAME="${{ steps.version.outputs.release_name }}"
+          mkdir -p "release/$RELEASE_NAME"
+          
+          # Copy all mod files except .git, .github, and other development files
+          rsync -av --exclude='.git' \
+                    --exclude='.github' \
+                    --exclude='.gitignore' \
+                    --exclude='*.zip' \
+                    --exclude='release' \
+                    --exclude='build' \
+                    --exclude='dist' \
+                    --exclude='.vscode' \
+                    --exclude='.idea' \
+                    ./ "release/$RELEASE_NAME/"
+      
+      - name: Create zip archive
+        run: |
+          RELEASE_NAME="${{ steps.version.outputs.release_name }}"
+          cd release
+          zip -r "../${RELEASE_NAME}.zip" "$RELEASE_NAME"
+          cd ..
+      
+      - name: Create GitHub Release
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          RELEASE_NAME="${{ steps.version.outputs.release_name }}"
+          
+          gh release create "v${VERSION}" \
+            "${RELEASE_NAME}.zip" \
+            --title "Release ${VERSION}" \
+            --notes "Release of ${RELEASE_NAME}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

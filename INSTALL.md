@@ -200,6 +200,23 @@ WeightCalculator/
 
 **Deutsch:**
 
+**Automatische Methode (empfohlen):**
+
+1. Aktualisiere die Versionsnummer in `info.json` (optional - wird automatisch erhöht, falls Version bereits existiert)
+2. Aktualisiere `changelog.txt`
+3. Gehe zu GitHub Actions: https://github.com/Symgot/WeightCalculator/actions
+4. Wähle "Create Release" Workflow
+5. Klicke auf "Run workflow"
+
+Der Workflow:
+- Liest Modname und Version aus `info.json`
+- Prüft, ob die Version bereits existiert
+- Erhöht automatisch die Version um 0.0.1, falls nötig
+- Erstellt eine ZIP-Datei mit der Struktur: `ModName_Version.zip` → `ModName_Version/`
+- Erstellt ein GitHub Release mit der ZIP-Datei
+
+**Manuelle Methode:**
+
 1. Aktualisiere die Versionsnummer in `info.json`
 2. Aktualisiere `changelog.txt`
 3. Erstelle eine ZIP-Datei:
@@ -214,6 +231,23 @@ WeightCalculator/
 5. Erstelle ein GitHub Release mit der ZIP-Datei
 
 **English:**
+
+**Automatic Method (recommended):**
+
+1. Update version number in `info.json` (optional - will be auto-incremented if version exists)
+2. Update `changelog.txt`
+3. Go to GitHub Actions: https://github.com/Symgot/WeightCalculator/actions
+4. Select "Create Release" workflow
+5. Click "Run workflow"
+
+The workflow will:
+- Read mod name and version from `info.json`
+- Check if the version already exists
+- Automatically increment version by 0.0.1 if needed
+- Create a ZIP file with structure: `ModName_Version.zip` → `ModName_Version/`
+- Create a GitHub release with the ZIP file
+
+**Manual Method:**
 
 1. Update version number in `info.json`
 2. Update `changelog.txt`

@@ -26,6 +26,10 @@ ship_monitor.inventory_size = nil
 ship_monitor.picture = nil
 ship_monitor.corpse = nil
 
+-- Ensure placeable on all surfaces including modded planets
+ship_monitor.surface_conditions = nil  -- Remove any surface restrictions
+weight_calculator.surface_conditions = nil  -- Remove any surface restrictions
+
 data:extend({
   weight_calculator,
   ship_monitor
